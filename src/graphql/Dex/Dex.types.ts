@@ -24,9 +24,6 @@ export class Dex {
 
 @InputType()
 export class DexInput {
-  @Field(() => Int, { nullable: false })
-  id: number;
-
   @Field({ nullable: false })
   name: string;
 }

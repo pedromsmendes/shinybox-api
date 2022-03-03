@@ -1,12 +1,12 @@
 import {
-  Arg, Mutation, Query, Resolver,
+  Arg, FieldResolver, Int, Mutation, Query, Resolver, Root,
 } from 'type-graphql';
 
 import db from '@/db';
 
 import { Dex, DexInput } from './Dex.types';
 
-@Resolver()
+@Resolver(() => Dex)
 class DexResolver {
   @Query(() => Dex)
   async dex(@Arg('id') id: number) {
@@ -22,13 +22,31 @@ class DexResolver {
     return dexes;
   }
 
-  @Mutation(() => Dex)
-  async addDex(@Arg('dexData') dexData: DexInput) {
-    const dex = await db.dex.create({
-      data: dexData,
+  @FieldResolver()
+  async pokemons(@Root() dex: Dex) {
+    const pokemons = await db.pokemonDex.findMany({
+      where: { dexId: dex.id },
+      include: { pokemon: true },
     });
 
+    return pokemons;
+  }
+
+  @Mutation(() => Dex)
+  async addDex(@Arg('data') data: DexInput) {
+    const dex = await db.dex.create({
+      data,
+    });
+    console.log('🚀 ~ DexResolver ~ addDex ~ dex', dex);
+
     return dex;
+  }
+
+  @Mutation(() => Int)
+  async removeDexes(@Arg('ids', () => [Int]) ids: number[]) {
+    const { count } = await db.dex.deleteMany({ where: { id: { in: ids } } });
+
+    return count;
   }
 }
 

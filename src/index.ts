@@ -18,5 +18,5 @@ const main = async () => {
 
 main()
   .catch((PROGRAM_ERROR) => {
-    console.trace(new Error(PROGRAM_ERROR));
+    console.trace(PROGRAM_ERROR);
   });

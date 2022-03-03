@@ -18,7 +18,7 @@ model Pokemon {
 }
 
 model Dex {
-  id        Int          @id
+  id        Int          @id @default(autoincrement())
   name      String       @unique
   pokemons  PokemonDex[]
   createdAt DateTime     @default(now())
@@ -26,7 +26,7 @@ model Dex {
 }
 
 model PokemonDex {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   number    Int
   name      String
   pokemon   Pokemon  @relation(fields: [pokemonId], references: [id])
