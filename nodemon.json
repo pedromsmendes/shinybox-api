@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "watch": [
+    "./src"
+  ],
+  "exec": "ts-node -r tsconfig-paths/register ./src/index.ts",
+  "ext": "ts"
+}

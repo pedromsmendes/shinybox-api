@@ -1,0 +1,38 @@
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Pokemon {
+  id        Int          @id
+  name      String
+  dexes     PokemonDex[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Dex {
+  id        Int          @id
+  name      String       @unique
+  pokemons  PokemonDex[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model PokemonDex {
+  id        Int      @id
+  number    Int
+  name      String
+  pokemon   Pokemon  @relation(fields: [pokemonId], references: [id])
+  pokemonId Int
+  dex       Dex      @relation(fields: [dexId], references: [id])
+  dexId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

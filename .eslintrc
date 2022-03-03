@@ -1,0 +1,76 @@
+{
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "plugins": [
+    "import",
+    "@typescript-eslint"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {},
+      "node": {
+        "extensions": [
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
+  "rules": {
+    "import/no-cycle": 0,
+    "max-len": 0,
+    "prefer-destructuring": 0,
+    "import/extensions": 0,
+    "no-empty": "off",
+    "no-console": "off",
+    "no-prototype-builtins": "off",
+    "no-useless-constructor": "off",
+    "no-unused-vars": "error",
+    "semi": "off",
+    "no-plusplus": "off",
+    "max-classes-per-file": 0,
+    "prefer-template": 0,
+    "no-useless-concat": 0,
+    "indent": 0,
+    "no-use-before-define": 0,
+    "class-methods-use-this": 0,
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/prefer-template": 0,
+    "@typescript-eslint/no-useless-concat": 0,
+    "@typescript-eslint/semi": [
+      "error"
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}
