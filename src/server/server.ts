@@ -5,7 +5,9 @@ import notFound from './routes/notFound';
 
 const express = expressServer();
 
-express.get('/', welcome);
-express.get('/*', notFound);
+export const addRoutes = () => {
+  express.get('/', welcome);
+  express.get('/*', notFound);
+};
 
 export default express;

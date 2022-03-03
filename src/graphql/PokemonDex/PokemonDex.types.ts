@@ -3,6 +3,7 @@ import {
 } from 'type-graphql';
 
 import { Pokemon } from '../Pokemon/Pokemon.types';
+import { Dex } from '../Dex/Dex.types';
 
 @ObjectType()
 export class PokemonDex {
@@ -15,14 +16,14 @@ export class PokemonDex {
   @Field({ nullable: false })
   name: string;
 
-  @Field()
+  @Field(() => Pokemon)
   pokemon: Pokemon;
 
   @Field(() => Int, { nullable: false })
   pokemonId: number;
 
-  @Field()
-  dex: Pokemon;
+  @Field(() => Dex)
+  dex: Dex;
 
   @Field(() => Int, { nullable: false })
   dexId: number;

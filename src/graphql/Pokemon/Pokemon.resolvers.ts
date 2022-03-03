@@ -25,12 +25,9 @@ class PokemonResolver {
   }
 
   @Mutation(() => Pokemon)
-  async addPokemon(@Arg('pokemonData') pokemonData: PokemonInput): Promise<Pokemon> {
+  async addPokemon(@Arg('pokemonData') pokemonData: PokemonInput) {
     const pokemon = await db.pokemon.create({
       data: pokemonData,
-      include: {
-        dexes: true,
-      },
     });
 
     return pokemon;

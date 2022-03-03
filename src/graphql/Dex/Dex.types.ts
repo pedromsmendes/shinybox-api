@@ -1,5 +1,5 @@
 import {
-  Field, Int, ObjectType,
+  Field, InputType, Int, ObjectType,
 } from 'type-graphql';
 
 import { PokemonDex } from '../PokemonDex/PokemonDex.types';
@@ -12,7 +12,7 @@ export class Dex {
   @Field({ nullable: false })
   name: string;
 
-  @Field()
+  @Field(() => [PokemonDex])
   pokemons: PokemonDex[];
 
   @Field({ nullable: false })
@@ -22,6 +22,11 @@ export class Dex {
   updatedAt: Date;
 }
 
+@InputType()
 export class DexInput {
+  @Field(() => Int, { nullable: false })
+  id: number;
 
+  @Field({ nullable: false })
+  name: string;
 }

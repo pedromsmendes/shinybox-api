@@ -17,6 +17,10 @@ if (!process.env.API_PORT) {
   }
 }
 
+if (!process.env.GQL_PATH) {
+  variableErrors.pushMissingVariable('GQL_PATH');
+}
+
 variableErrors.throw();
 
 export const NODE_ENV = process.env.NODE_ENV!;
@@ -24,3 +28,4 @@ export const IN_DEV = NODE_ENV === 'development';
 export const IN_TEST = NODE_ENV === 'test';
 export const IN_PROD = NODE_ENV === 'production';
 export const API_PORT = parsedApiPort;
+export const GQL_PATH = process.env.GQL_PATH;

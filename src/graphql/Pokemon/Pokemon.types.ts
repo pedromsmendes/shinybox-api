@@ -12,7 +12,7 @@ export class Pokemon {
   @Field({ nullable: false })
   name: string;
 
-  @Field()
+  @Field(() => [PokemonDex])
   dexes: PokemonDex[];
 
   @Field({ nullable: false })
