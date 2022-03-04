@@ -4,7 +4,7 @@ import {
 
 import db from '@/db';
 
-import { Pokemon, PokemonInput } from './Pokemon.types';
+import { Pokemon, PokemonCreate, PokemonUpdate } from './Pokemon.types';
 
 @Resolver(() => Pokemon)
 class PokemonResolver {
@@ -34,43 +34,71 @@ class PokemonResolver {
     return dexes;
   }
 
-  @Mutation(() => Pokemon)
-  async addPokemon(@Arg('data') data: PokemonInput) {
-    const missingDexes: number[] = [];
-    const dexesToAssociate: PokemonInput['dexes'] = [];
+  @Mutation(() => Pokemon, { nullable: true })
+  async createPokemon(@Arg('data') data: PokemonCreate) {
+    const validDexes = await Promise.all(
+      data.dexes.filter((dex) => (
+        db.dex.findUnique({ where: { id: dex.dexId } })
+          .then((validDex) => !!validDex)
+      )),
+    );
 
-    data.dexes.forEach(async (dex) => {
-      const validDex = await db.dex.findUnique({ where: { id: dex.dexId } });
-
-      if (!validDex) {
-        missingDexes.push(dex.dexId);
-      } else {
-        dexesToAssociate.push(dex);
-      }
-    });
+    if (!validDexes.length) {
+      console.log('error, no dex, pokemon should have a dex');
+      return null;
+    }
 
     const pokemon = await db.pokemon.create({
       data: {
-        id: data.id,
         name: data.name,
-        // dexes: {
-        //   connectOrCreate: dexesToAssociate.map((dex) => ({
-        //     create: {
-        //       name: dex.pokemonName,
-        //       number: dex.number,
-        //       dexId: dex.dexId,
-        //     },
-        //     where: {
-        //       id: data.id,
-        //     },
-        //   })),
-        // },
+        dexes: {
+          create: validDexes.map((dex) => ({
+            name: dex.name,
+            number: dex.number,
+            dexId: dex.dexId,
+          })),
+        },
       },
     });
 
-    console.log('🚀 ~ PokemonResolver ~ addPokemon ~ pokemon', pokemon);
-    const allRelations = await db.pokemonDex.findMany();
-    console.log('🚀 ~ PokemonResolver ~ addPokemon ~ allRelations', allRelations);
+    return pokemon;
+  }
+
+  @Mutation(() => Pokemon, { nullable: true })
+  async updatePokemon(@Arg('data') data: PokemonUpdate) {
+    console.log('🚀 ~ PokemonResolver ~ updatePokemon ~ data', data);
+    // checking if sent dexes are valid
+    const validDexes = await Promise.all(
+      (data.dexes || []).filter((dex) => (
+        db.dex.findUnique({ where: { id: dex.dexId } })
+          .then((validDex) => !!validDex)
+      )),
+    );
+
+    if (Array.isArray(data.dexes) && !validDexes.length) {
+      console.log('error, no dex, pokemon should have a dex');
+      return null;
+    }
+
+    if (Array.isArray(data.dexes)) {
+      await db.pokemonDex.deleteMany({ where: { pokemonId: data.id } });
+    }
+
+    const pokemon = await db.pokemon.update({
+      where: { id: data.id },
+      data: {
+        name: data.name,
+        ...(Array.isArray(data.dexes) ? {
+          dexes: {
+            create: validDexes.map((dex) => ({
+              name: dex.name,
+              number: dex.number,
+              dexId: dex.dexId,
+            })),
+          },
+        } : {}),
+      },
+    });
 
     return pokemon;
   }

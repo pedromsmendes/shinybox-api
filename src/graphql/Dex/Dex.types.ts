@@ -23,7 +23,7 @@ export class Dex {
 }
 
 @InputType()
-export class DexInput {
+export class DexCreate {
   @Field({ nullable: false })
   name: string;
 }

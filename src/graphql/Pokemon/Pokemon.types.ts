@@ -23,7 +23,16 @@ export class Pokemon {
 }
 
 @InputType()
-export class PokemonDexInput {
+export class PokemonCreate {
+  @Field({ nullable: false })
+  name: string;
+
+  @Field(() => [PokemonDexCreate])
+  dexes: PokemonDexCreate[];
+}
+
+@InputType()
+export class PokemonDexCreate {
   @Field(() => Int, { nullable: false })
   dexId: number;
 
@@ -31,17 +40,29 @@ export class PokemonDexInput {
   number: number;
 
   @Field({ nullable: false })
-  pokemonName: string;
+  name: string;
 }
 
 @InputType()
-export class PokemonInput {
+export class PokemonUpdate {
   @Field(() => Int, { nullable: false })
   id: number;
 
-  @Field({ nullable: false })
-  name: string;
+  @Field({ nullable: true })
+  name?: string;
 
-  @Field(() => [PokemonDexInput])
-  dexes: PokemonDexInput[];
+  @Field(() => [PokemonDexCreate], { nullable: true })
+  dexes?: PokemonDexUpdate[];
+}
+
+@InputType()
+export class PokemonDexUpdate {
+  @Field(() => Int, { nullable: true })
+  dexId: number;
+
+  @Field(() => Int, { nullable: true })
+  number: number;
+
+  @Field({ nullable: true })
+  name: string;
 }

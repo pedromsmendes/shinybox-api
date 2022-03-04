@@ -4,7 +4,7 @@ import {
 
 import db from '@/db';
 
-import { Dex, DexInput } from './Dex.types';
+import { Dex, DexCreate } from './Dex.types';
 
 @Resolver(() => Dex)
 class DexResolver {
@@ -33,11 +33,10 @@ class DexResolver {
   }
 
   @Mutation(() => Dex)
-  async addDex(@Arg('data') data: DexInput) {
+  async createDex(@Arg('data') data: DexCreate) {
     const dex = await db.dex.create({
       data,
     });
-    console.log('🚀 ~ DexResolver ~ addDex ~ dex', dex);
 
     return dex;
   }
