@@ -27,3 +27,12 @@ export class DexCreate {
   @Field({ nullable: false })
   name: string;
 }
+
+@InputType()
+export class DexUpdate {
+  @Field(() => Int, { nullable: false })
+  id: number;
+
+  @Field({ nullable: true })
+  name?: string;
+}

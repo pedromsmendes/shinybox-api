@@ -8,9 +8,7 @@ import { Pokemon, PokemonCreate, PokemonUpdate } from './Pokemon.types';
 
 @Resolver(() => Pokemon)
 class PokemonResolver {
-  // constructor(private pokemonService: PokemonService) { }
-
-  @Query(() => Pokemon)
+  @Query(() => Pokemon, { nullable: true })
   async pokemon(@Arg('id') id: number) {
     const pokemon = await db.pokemon.findUnique({ where: { id } });
 

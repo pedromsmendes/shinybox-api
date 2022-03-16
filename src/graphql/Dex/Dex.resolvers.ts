@@ -4,11 +4,11 @@ import {
 
 import db from '@/db';
 
-import { Dex, DexCreate } from './Dex.types';
+import { Dex, DexCreate, DexUpdate } from './Dex.types';
 
 @Resolver(() => Dex)
 class DexResolver {
-  @Query(() => Dex)
+  @Query(() => Dex, { nullable: true })
   async dex(@Arg('id') id: number) {
     const dex = await db.dex.findUnique({ where: { id } });
 
@@ -32,9 +32,19 @@ class DexResolver {
     return pokemons;
   }
 
-  @Mutation(() => Dex)
+  @Mutation(() => Dex, { nullable: true })
   async createDex(@Arg('data') data: DexCreate) {
     const dex = await db.dex.create({
+      data,
+    });
+
+    return dex;
+  }
+
+  @Mutation(() => Dex, { nullable: true })
+  async updateDex(@Arg('data') data: DexUpdate) {
+    const dex = await db.dex.update({
+      where: { id: data.id },
       data,
     });
 
