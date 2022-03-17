@@ -52,7 +52,7 @@ class DexResolver {
   }
 
   @Mutation(() => Int)
-  async removeDexes(@Arg('ids', () => [Int]) ids: string[]) {
+  async removeDexes(@Arg('ids', () => [String]) ids: string[]) {
     const { count } = await db.dex.deleteMany({ where: { id: { in: ids } } });
 
     return count;

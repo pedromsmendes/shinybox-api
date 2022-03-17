@@ -102,7 +102,7 @@ class PokemonResolver {
   }
 
   @Mutation(() => Int)
-  async removePokemons(@Arg('ids', () => [Int]) ids: string[]) {
+  async removePokemons(@Arg('ids', () => [String]) ids: string[]) {
     const { count } = await db.pokemon.deleteMany({ where: { id: { in: ids } } });
 
     return count;
