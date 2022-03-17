@@ -21,7 +21,7 @@ const createTokensAndReturn = async (
 
   // return the new tokens
   return res.status(200).json({
-    error: null,
+    error: [],
     data: {
       accessToken: apiAccessToken.id,
       accessTokenExpiracy: apiAccessToken.expiracy,

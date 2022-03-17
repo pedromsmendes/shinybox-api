@@ -5,20 +5,23 @@ type RequestBodyErrorType = {
 };
 
 export default class RequestBodyError {
-  private _code: string;
+  private _errors: RequestBodyErrorType[] = [];
 
-  private _msg: string;
-
-  constructor(error: RequestBodyErrorType) {
-    this._code = error.code;
-    this._msg = error.msg;
+  constructor(errors?: RequestBodyErrorType[]) {
+    this._errors.push(...(errors || []));
   }
 
-  get code() {
-    return this._code;
+  push(error: RequestBodyErrorType) {
+    this._errors.push(error);
   }
 
-  get msg() {
-    return this._msg;
+  throw() {
+    if (this._errors.length) {
+      throw new RequestBodyError(this._errors);
+    }
+  }
+
+  get errors() {
+    return this._errors;
   }
 }
