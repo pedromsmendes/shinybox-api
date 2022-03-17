@@ -9,7 +9,7 @@ import { Pokemon, PokemonCreate, PokemonUpdate } from './Pokemon.types';
 @Resolver(() => Pokemon)
 class PokemonResolver {
   @Query(() => Pokemon, { nullable: true })
-  async pokemon(@Arg('id') id: number) {
+  async pokemon(@Arg('id') id: string) {
     const pokemon = await db.pokemon.findUnique({ where: { id } });
 
     return pokemon;
@@ -102,7 +102,7 @@ class PokemonResolver {
   }
 
   @Mutation(() => Int)
-  async removePokemons(@Arg('ids', () => [Int]) ids: number[]) {
+  async removePokemons(@Arg('ids', () => [Int]) ids: string[]) {
     const { count } = await db.pokemon.deleteMany({ where: { id: { in: ids } } });
 
     return count;

@@ -38,10 +38,20 @@
     "prefer-destructuring": 0,
     "import/extensions": 0,
     "no-empty": "off",
-    "no-console": "off",
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "info",
+          "warn",
+          "error",
+          "trace"
+        ]
+      }
+    ],
     "no-prototype-builtins": "off",
     "no-useless-constructor": "off",
-    "no-unused-vars": "error",
+    "no-unused-vars": "off",
     "semi": "off",
     "no-plusplus": "off",
     "max-classes-per-file": 0,
@@ -50,6 +60,13 @@
     "indent": 0,
     "no-use-before-define": 0,
     "class-methods-use-this": 0,
+    "no-void": [
+      "error",
+      {
+        "allowAsStatement": true
+      }
+    ],
+    "no-shadow": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-empty-interface": "off",
@@ -70,6 +87,21 @@
       {
         "ignoreRestSiblings": true,
         "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/return-await": "error",
+    "@typescript-eslint/require-await": "error",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksConditionals": true
+      }
+    ],
+    "@typescript-eslint/no-floating-promises": [
+      "error",
+      {
+        "ignoreVoid": true
       }
     ]
   }

@@ -6,8 +6,8 @@ import { PokemonDex } from '../PokemonDex/PokemonDex.types';
 
 @ObjectType()
 export class Pokemon {
-  @Field(() => Int, { nullable: false })
-  id: number;
+  @Field({ nullable: false })
+  id: string;
 
   @Field({ nullable: false })
   name: string;
@@ -33,8 +33,8 @@ export class PokemonCreate {
 
 @InputType()
 export class PokemonDexCreate {
-  @Field(() => Int, { nullable: false })
-  dexId: number;
+  @Field({ nullable: false })
+  dexId: string;
 
   @Field(() => Int, { nullable: false })
   number: number;
@@ -45,8 +45,8 @@ export class PokemonDexCreate {
 
 @InputType()
 export class PokemonUpdate {
-  @Field(() => Int, { nullable: false })
-  id: number;
+  @Field({ nullable: false })
+  id: string;
 
   @Field({ nullable: true })
   name?: string;
@@ -57,8 +57,8 @@ export class PokemonUpdate {
 
 @InputType()
 export class PokemonDexUpdate {
-  @Field(() => Int, { nullable: true })
-  dexId: number;
+  @Field({ nullable: true })
+  dexId: string;
 
   @Field(() => Int, { nullable: true })
   number: number;

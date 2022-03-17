@@ -9,8 +9,74 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum RoleCode {
+  ADMIN
+  USER
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  name      String
+  code      RoleCode @unique
+  isAdmin   Boolean  @default(false)
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id            String            @id @default(uuid())
+  email         String            @unique
+  password      String
+  name          String?
+  avatar        String?
+  roleId        String
+  role          Role              @relation(fields: [roleId], references: [id])
+  accessTokens  ApiAccessToken[]
+  refreshTokens ApiRefreshToken[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+enum ApiClientScope {
+  FRONTEND
+  MOBILE
+}
+
+model ApiClient {
+  id            String            @id @default(uuid())
+  secret        String            @default(uuid())
+  scope         ApiClientScope    @default(FRONTEND)
+  accessTokens  ApiAccessToken[]
+  refreshTokens ApiRefreshToken[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model ApiAccessToken {
+  id          String    @id @default(uuid())
+  expiracy    DateTime?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiClientId String
+  apiClient   ApiClient @relation(fields: [apiClientId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ApiRefreshToken {
+  id          String    @id @default(uuid())
+  expiracy    DateTime?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiClientId String
+  apiClient   ApiClient @relation(fields: [apiClientId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model Pokemon {
-  id        Int          @id @default(autoincrement())
+  id        String       @id @default(uuid())
   name      String
   dexes     PokemonDex[]
   createdAt DateTime     @default(now())
@@ -18,7 +84,7 @@ model Pokemon {
 }
 
 model Dex {
-  id        Int          @id @default(autoincrement())
+  id        String       @id @default(uuid())
   name      String       @unique
   pokemons  PokemonDex[]
   createdAt DateTime     @default(now())
@@ -26,13 +92,13 @@ model Dex {
 }
 
 model PokemonDex {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   number    Int
   name      String
   pokemon   Pokemon  @relation(fields: [pokemonId], references: [id], onDelete: Cascade)
-  pokemonId Int
+  pokemonId String
   dex       Dex      @relation(fields: [dexId], references: [id], onDelete: Cascade)
-  dexId     Int
+  dexId     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

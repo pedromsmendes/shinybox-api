@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 const welcome = (_req: Request, res: Response) => res.send(`
   <html>

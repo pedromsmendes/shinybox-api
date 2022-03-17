@@ -7,8 +7,8 @@ import { Dex } from '../Dex/Dex.types';
 
 @ObjectType()
 export class PokemonDex {
-  @Field(() => Int, { nullable: false })
-  id: number;
+  @Field({ nullable: false })
+  id: string;
 
   @Field(() => Int, { nullable: false })
   number: number;
@@ -19,14 +19,14 @@ export class PokemonDex {
   @Field(() => Pokemon)
   pokemon: Pokemon;
 
-  @Field(() => Int, { nullable: false })
-  pokemonId: number;
+  @Field({ nullable: false })
+  pokemonId: string;
 
   @Field(() => Dex)
   dex: Dex;
 
-  @Field(() => Int, { nullable: false })
-  dexId: number;
+  @Field({ nullable: false })
+  dexId: string;
 
   @Field({ nullable: false })
   createdAt: Date;

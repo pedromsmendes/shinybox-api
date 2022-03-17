@@ -9,7 +9,7 @@ import { Dex, DexCreate, DexUpdate } from './Dex.types';
 @Resolver(() => Dex)
 class DexResolver {
   @Query(() => Dex, { nullable: true })
-  async dex(@Arg('id') id: number) {
+  async dex(@Arg('id') id: string) {
     const dex = await db.dex.findUnique({ where: { id } });
 
     return dex;
@@ -52,7 +52,7 @@ class DexResolver {
   }
 
   @Mutation(() => Int)
-  async removeDexes(@Arg('ids', () => [Int]) ids: number[]) {
+  async removeDexes(@Arg('ids', () => [Int]) ids: string[]) {
     const { count } = await db.dex.deleteMany({ where: { id: { in: ids } } });
 
     return count;
