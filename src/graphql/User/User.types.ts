@@ -6,22 +6,22 @@ import { Role } from '../Role/Role.types';
 
 @ObjectType()
 export class User {
-  @Field({ nullable: false })
+  @Field(() => String, { nullable: false })
   id: string;
 
-  @Field({ nullable: false })
+  @Field(() => String, { nullable: false })
   email: string;
 
-  @Field({ nullable: false })
+  @Field(() => String, { nullable: false })
   password: string;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   name: string | null;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   avatar: string | null;
 
-  @Field({ nullable: false })
+  @Field(() => String, { nullable: false })
   roleId: string;
 
   @Field(() => Role, { nullable: false })
@@ -35,16 +35,40 @@ export class User {
 }
 
 @InputType()
-export class DexCreate {
+export class UserCreate {
   @Field({ nullable: false })
-  name: string;
+  email: string;
+
+  @Field({ nullable: false })
+  password: string;
+
+  @Field({ nullable: true })
+  name?: string;
+
+  @Field({ nullable: true })
+  avatar?: string;
+
+  @Field({ nullable: false })
+  roleId: string;
 }
 
 @InputType()
-export class DexUpdate {
+export class UserUpdate {
   @Field({ nullable: false })
   id: string;
 
   @Field({ nullable: true })
+  email?: string;
+
+  @Field({ nullable: true })
+  password?: string;
+
+  @Field({ nullable: true })
   name?: string;
+
+  @Field({ nullable: true })
+  avatar?: string;
+
+  @Field({ nullable: true })
+  roleId?: string;
 }

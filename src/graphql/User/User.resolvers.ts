@@ -5,6 +5,8 @@ import {
 import db from '@/db';
 
 import { User } from './User.types';
+import { Role } from '../Role/Role.types';
+
 import { ApolloContext } from '../types';
 
 @Resolver(() => User)
@@ -23,14 +25,14 @@ class UserResolver {
     return users;
   }
 
-  @Query(() => User)
+  @Query(() => User, { nullable: true })
   me(@Ctx() { user }: ApolloContext) {
     if (!user) { return null; }
 
     return user;
   }
 
-  @FieldResolver()
+  @FieldResolver(() => Role, { nullable: true })
   async role(@Root() user: User) {
     const userRole = await db.user.findUnique({
       where: { id: user.id },

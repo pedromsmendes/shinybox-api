@@ -6,10 +6,14 @@ import express from '@/server';
 import { initialData } from './db';
 import graphql from './graphql';
 
+import notFound from './server/routes/notFound';
+
 const main = async () => {
   await initialData();
 
   await graphql(express);
+
+  express.get('/*', notFound);
 
   express.listen(API_PORT, '0.0.0.0', () => {
     console.info('Server listening on ', API_PORT);

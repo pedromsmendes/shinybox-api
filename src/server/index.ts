@@ -10,7 +10,6 @@ import extractToken from './auth/helpers/extractToken';
 import injectUser from './auth/helpers/injectUser';
 
 import welcome from './routes/welcome';
-import notFound from './routes/notFound';
 
 const express = expressServer();
 
@@ -25,6 +24,5 @@ express.use(injectUser);
 /* serve assets */
 
 express.get('/', welcome);
-express.get('/*', notFound);
 
 export default express;

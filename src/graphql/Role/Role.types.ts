@@ -25,16 +25,28 @@ export class Role {
 }
 
 @InputType()
-export class DexCreate {
-  @Field({ nullable: false })
+export class RoleCreate {
+  @Field(() => String, { nullable: false })
   name: string;
+
+  @Field(() => String, { nullable: false })
+  code: string;
+
+  @Field(() => Boolean, { nullable: true })
+  isAdmin?: boolean;
 }
 
 @InputType()
-export class DexUpdate {
+export class RoleUpdate {
   @Field({ nullable: false })
   id: string;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   name?: string;
+
+  @Field(() => String, { nullable: true })
+  code?: string;
+
+  @Field(() => Boolean, { nullable: true })
+  isAdmin?: boolean;
 }
