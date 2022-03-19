@@ -4,6 +4,7 @@ import db from '@/db';
 import RequestBodyError from '@/tools/RequestBodyError';
 
 import extractPropsBody, { Action } from './helpers/extractPropsBody';
+import type { LogoutReturn } from './types';
 
 const logoutRequest = async (req: Request, res: Response) => {
   try {
@@ -27,23 +28,34 @@ const logoutRequest = async (req: Request, res: Response) => {
       db.apiRefreshToken.delete({ where: { id: refreshToken } }),
     ]);
 
-    return res.status(200).json({ success: true });
+    const ret: LogoutReturn = {
+      errors: [],
+      sucess: true,
+    };
+
+    return res.status(200).json(ret);
   } catch (ex) {
+    console.trace('-- LOGOUT Exception --\n', ex);
+
+    let ret: LogoutReturn;
     if (ex instanceof RequestBodyError) {
-      return res.status(400).json({
-        data: null,
-        error: ex.errors,
-      });
+      ret = {
+        sucess: false,
+        errors: ex.errors,
+      };
+
+      return res.status(400).json(ret);
     }
 
-    console.trace('-- LOGOUT Exception --\n', ex);
-    return res.status(500).json({
-      data: null,
-      error: [{
+    ret = {
+      sucess: false,
+      errors: [{
         code: 'INTERNAL_SERVER_ERROR',
         msg: 'Internal server error. Try again later.',
       }],
-    });
+    };
+
+    return res.status(500).json(ret);
   }
 };
 

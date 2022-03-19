@@ -1,6 +1,8 @@
 import type { Response } from 'express';
 import db from '@/db';
 
+import type { GrantReturn } from '../types';
+
 const createTokensAndReturn = async (
   apiClientId: string,
   userId: string,
@@ -19,16 +21,17 @@ const createTokensAndReturn = async (
     },
   });
 
-  // return the new tokens
-  return res.status(200).json({
-    error: [],
+  const ret: GrantReturn = {
+    errors: [],
     data: {
       accessToken: apiAccessToken.id,
-      accessTokenExpiracy: apiAccessToken.expiracy,
+      accessTokenExpiracy: apiAccessToken.expiracy!,
       refreshToken: apiRefreshToken.id,
-      refreshTokenExpiracy: apiRefreshToken.expiracy,
+      refreshTokenExpiracy: apiRefreshToken.expiracy!,
     },
-  });
+  };
+
+  return res.status(200).json(ret);
 };
 
 export default createTokensAndReturn;

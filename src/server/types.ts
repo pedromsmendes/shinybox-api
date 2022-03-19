@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 import type { IncomingHttpHeaders } from 'http';
-import type { User } from '@prisma/client';
+import type { Role, User } from '@prisma/client';
 
 // For some reason x-fowarded-for is missing from the IncomingHttpHeaders interface
 interface CustomIncomingHttpHeaders extends IncomingHttpHeaders {
@@ -9,6 +9,6 @@ interface CustomIncomingHttpHeaders extends IncomingHttpHeaders {
 
 export interface RequestUser extends Request {
   token?: string;
-  user?: User;
+  user?: User & { role: Role };
   headers: CustomIncomingHttpHeaders;
 }

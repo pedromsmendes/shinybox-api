@@ -8,7 +8,9 @@ import { invalidateRefreshToken, validRefreshToken } from '@/tools/tokenExpiracy
 import extractPropsBody, { Action, GrantType } from './helpers/extractPropsBody';
 import createTokensAndReturn from './helpers/createTokensAndReturn';
 
-const grantRequest = async (req: Request, res: Response) => {
+import type { GrantReturn } from './types';
+
+const grantRequest = async (req: Request, res: Response): Promise<Response<GrantReturn>> => {
   try {
     const {
       apiClientId,
@@ -59,7 +61,7 @@ const grantRequest = async (req: Request, res: Response) => {
             include: { user: true },
           });
 
-          if (!token || (token && validRefreshToken(token.expiracy))) {
+          if (!token || !validRefreshToken(token.expiracy)) {
             throw new RequestBodyError([{
               code: 'INVALID_REFRESH_TOKEN',
               msg: 'Invalid refresh_token',
@@ -91,21 +93,27 @@ const grantRequest = async (req: Request, res: Response) => {
         }]);
     }
   } catch (ex) {
+    console.trace('-- GRANT Exception --\n', ex);
+
+    let ret: GrantReturn;
     if (ex instanceof RequestBodyError) {
-      return res.status(400).json({
+      ret = {
         data: null,
-        error: ex.errors,
-      });
+        errors: ex.errors,
+      };
+
+      return res.status(400).json(ret);
     }
 
-    console.trace('-- GRANT Exception --\n', ex);
-    return res.status(500).json({
+    ret = {
       data: null,
-      error: [{
+      errors: [{
         code: 'INTERNAL_SERVER_ERROR',
         msg: 'Internal server error. Try again later.',
       }],
-    });
+    };
+
+    return res.status(500).json(ret);
   }
 };
 

@@ -4,6 +4,8 @@ import {
 
 import db from '@/db';
 
+import { Auth } from '@/tools/Decorators';
+
 import { Pokemon, PokemonCreate, PokemonUpdate } from './Pokemon.types';
 
 @Resolver(() => Pokemon)
@@ -32,6 +34,7 @@ class PokemonResolver {
     return dexes;
   }
 
+  @Auth({ admin: true })
   @Mutation(() => Pokemon, { nullable: true })
   async createPokemon(@Arg('data') data: PokemonCreate) {
     const validDexes = await Promise.all(
@@ -62,6 +65,7 @@ class PokemonResolver {
     return pokemon;
   }
 
+  @Auth({ admin: true })
   @Mutation(() => Pokemon, { nullable: true })
   async updatePokemon(@Arg('data') data: PokemonUpdate) {
     console.log('🚀 ~ PokemonResolver ~ updatePokemon ~ data', data);
@@ -101,6 +105,7 @@ class PokemonResolver {
     return pokemon;
   }
 
+  @Auth({ admin: true })
   @Mutation(() => Int)
   async removePokemons(@Arg('ids', () => [String]) ids: string[]) {
     const { count } = await db.pokemon.deleteMany({ where: { id: { in: ids } } });

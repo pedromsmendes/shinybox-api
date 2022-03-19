@@ -1,9 +1,6 @@
-/* eslint-disable no-underscore-dangle */
-type RequestBodyErrorType = {
-  code: string;
-  msg: string;
-};
+import type { RequestBodyErrorType } from '@/server/auth/types';
 
+/* eslint-disable no-underscore-dangle */
 export default class RequestBodyError {
   private _errors: RequestBodyErrorType[] = [];
 

@@ -4,6 +4,8 @@ import {
 
 import db from '@/db';
 
+import { Auth } from '@/tools/Decorators';
+
 import { Dex, DexCreate, DexUpdate } from './Dex.types';
 
 @Resolver(() => Dex)
@@ -32,6 +34,7 @@ class DexResolver {
     return pokemons;
   }
 
+  @Auth({ admin: true })
   @Mutation(() => Dex, { nullable: true })
   async createDex(@Arg('data') data: DexCreate) {
     const dex = await db.dex.create({
@@ -41,6 +44,7 @@ class DexResolver {
     return dex;
   }
 
+  @Auth({ admin: true })
   @Mutation(() => Dex, { nullable: true })
   async updateDex(@Arg('data') data: DexUpdate) {
     const dex = await db.dex.update({
@@ -51,6 +55,7 @@ class DexResolver {
     return dex;
   }
 
+  @Auth({ admin: true })
   @Mutation(() => Int)
   async removeDexes(@Arg('ids', () => [String]) ids: string[]) {
     const { count } = await db.dex.deleteMany({ where: { id: { in: ids } } });
