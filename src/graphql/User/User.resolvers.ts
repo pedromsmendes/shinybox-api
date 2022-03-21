@@ -6,10 +6,11 @@ import db from '@/db';
 
 import { Auth } from '@/tools/Decorators';
 
-import { User } from './User.types';
+import { User, UserCreate, UserUpdate } from './User.types';
 import { Role } from '../Role/Role.types';
 
 import { ApolloContext } from '../types';
+import { userCreateSchema, userUpdateSchema } from './User.schema';
 
 @Resolver(() => User)
 class UserResolver {
@@ -44,6 +45,31 @@ class UserResolver {
     });
 
     return userRole?.role || null;
+  }
+
+  @Auth()
+  @Mutation(() => User, { nullable: true })
+  async createUser(@Arg('data') data: UserCreate) {
+    const res = await userCreateSchema.validate(data, { abortEarly: false });
+    console.log('🚀 ~ UserResolver ~ createUser ~ res', res);
+
+    const user = await db.user.create({ data });
+
+    return user;
+  }
+
+  @Auth()
+  @Mutation(() => User, { nullable: true })
+  async updateUser(@Arg('data') data: UserUpdate, @Arg('id') id: string) {
+    const res = await userUpdateSchema.validate(data, { abortEarly: false });
+    console.log('🚀 ~ UserResolver ~ createUser ~ res', res);
+
+    const user = await db.user.update({
+      where: { id },
+      data,
+    });
+
+    return user;
   }
 
   @Auth({ admin: true })

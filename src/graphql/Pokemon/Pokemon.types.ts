@@ -45,9 +45,6 @@ export class PokemonDexCreate {
 
 @InputType()
 export class PokemonUpdate {
-  @Field({ nullable: false })
-  id: string;
-
   @Field({ nullable: true })
   name?: string;
 

@@ -67,8 +67,7 @@ class PokemonResolver {
 
   @Auth({ admin: true })
   @Mutation(() => Pokemon, { nullable: true })
-  async updatePokemon(@Arg('data') data: PokemonUpdate) {
-    console.log('🚀 ~ PokemonResolver ~ updatePokemon ~ data', data);
+  async updatePokemon(@Arg('data') data: PokemonUpdate, @Arg('id') id: string) {
     // checking if sent dexes are valid
     const validDexes = await Promise.all(
       (data.dexes || []).filter((dex) => (
@@ -83,11 +82,11 @@ class PokemonResolver {
     }
 
     if (Array.isArray(data.dexes)) {
-      await db.pokemonDex.deleteMany({ where: { pokemonId: data.id } });
+      await db.pokemonDex.deleteMany({ where: { pokemonId: id } });
     }
 
     const pokemon = await db.pokemon.update({
-      where: { id: data.id },
+      where: { id },
       data: {
         name: data.name,
         ...(Array.isArray(data.dexes) ? {

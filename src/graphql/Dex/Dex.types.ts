@@ -30,9 +30,6 @@ export class DexCreate {
 
 @InputType()
 export class DexUpdate {
-  @Field({ nullable: false })
-  id: string;
-
   @Field({ nullable: true })
   name?: string;
 }

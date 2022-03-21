@@ -46,9 +46,9 @@ class DexResolver {
 
   @Auth({ admin: true })
   @Mutation(() => Dex, { nullable: true })
-  async updateDex(@Arg('data') data: DexUpdate) {
+  async updateDex(@Arg('data') data: DexUpdate, @Arg('id') id: string) {
     const dex = await db.dex.update({
-      where: { id: data.id },
+      where: { id },
       data,
     });
 

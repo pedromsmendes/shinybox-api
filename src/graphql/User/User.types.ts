@@ -54,9 +54,6 @@ export class UserCreate {
 
 @InputType()
 export class UserUpdate {
-  @Field({ nullable: false })
-  id: string;
-
   @Field({ nullable: true })
   email?: string;
 
