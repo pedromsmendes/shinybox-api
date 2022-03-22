@@ -1,4 +1,4 @@
-import VariableError from '@/tools/VariableError';
+import VariableError from '@/tools/errors/VariableError';
 
 const variableErrors = new VariableError();
 

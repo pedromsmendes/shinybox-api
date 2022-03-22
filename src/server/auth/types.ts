@@ -1,7 +1,4 @@
-export type RequestBodyErrorType = {
-  code: string;
-  msg: string;
-};
+import type { RequestBodyErrorType } from '@/tools/errors/RequestBodyError';
 
 export type TokenInfo = {
   accessToken: string;

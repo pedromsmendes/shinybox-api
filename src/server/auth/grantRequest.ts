@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import db from '@/db';
-import RequestBodyError from '@/tools/RequestBodyError';
+import RequestBodyError from '@/tools/errors/RequestBodyError';
 import { invalidateRefreshToken, validRefreshToken } from '@/tools/tokenExpiracy';
 
 import extractPropsBody, { Action, GrantType } from './helpers/extractPropsBody';

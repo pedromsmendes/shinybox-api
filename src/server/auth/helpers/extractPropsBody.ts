@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 
-import RequestBodyError from '@/tools/RequestBodyError';
+import RequestBodyError from '@/tools/errors/RequestBodyError';
 
 export enum Action {
   GRANT = 'grant',

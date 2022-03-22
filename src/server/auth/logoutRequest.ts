@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import db from '@/db';
-import RequestBodyError from '@/tools/RequestBodyError';
+import RequestBodyError from '@/tools/errors/RequestBodyError';
 
 import extractPropsBody, { Action } from './helpers/extractPropsBody';
 import type { LogoutReturn } from './types';
