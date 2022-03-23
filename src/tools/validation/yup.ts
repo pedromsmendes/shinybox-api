@@ -1,30 +1,31 @@
 import { ApolloError } from 'apollo-server-core';
 import { type ObjectSchema, ValidationError } from 'yup';
 
-type Error = {
-  field: string;
-  msg: string;
-};
+import { Code, type GraphqlError } from '@/graphql/Globals/Globals.types';
 
 const formatErrors = (exception: ValidationError) => {
+  const errors: GraphqlError[] = [];
+
   if (!exception.inner) {
-    return [];
+    return errors;
   }
 
   if (exception.inner.length === 0) {
-    return [{
+    errors.push({
       field: exception.path || '*',
-      msg: exception.message || '',
-    }];
-  }
+      message: exception.message || '',
+      code: Code.BAD_USER_INPUT,
+    });
 
-  const errors: Error[] = [];
+    return errors;
+  }
 
   (exception.inner || []).forEach((err) => {
     (err.errors || []).forEach((errMsg) => {
       errors.push({
         field: err.path || '*',
-        msg: errMsg,
+        message: errMsg,
+        code: Code.WRONG_BINO,
       });
     });
   });
@@ -37,7 +38,7 @@ const validateYup = async (schema: ObjectSchema<any>, data: any) => {
     await schema.validate(data, { abortEarly: false });
   } catch (ex) {
     if (ex instanceof ValidationError) {
-      const errors: Error[] = [...formatErrors(ex)];
+      const errors = formatErrors(ex);
 
       throw new ApolloError(
         'Validation failed',
