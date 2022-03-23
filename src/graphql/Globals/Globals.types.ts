@@ -1,5 +1,5 @@
 import {
-  Field, ObjectType, Query, registerEnumType, Resolver,
+  Field, ObjectType, registerEnumType,
 } from 'type-graphql';
 
 export enum Code {
@@ -23,13 +23,3 @@ export class GraphqlError {
   @Field(() => Code, { nullable: true })
   code?: Code;
 }
-
-@Resolver()
-class JustForTypes {
-  @Query(() => GraphqlError, { nullable: true })
-  justForTypes() {
-    return null;
-  }
-}
-
-export default JustForTypes;
