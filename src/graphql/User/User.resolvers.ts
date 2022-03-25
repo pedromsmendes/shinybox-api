@@ -2,6 +2,9 @@ import {
   Arg, Ctx, FieldResolver, Int, Mutation, Query, Resolver, Root,
 } from 'type-graphql';
 
+import { createWriteStream } from 'fs';
+import { finished } from 'stream/promises';
+
 import db from '@/db';
 
 import { Auth } from '@/tools/Decorators';
@@ -52,7 +55,10 @@ class UserResolver {
   @Mutation(() => User, { nullable: true })
   async createUser(@Arg('data') data: UserCreate) {
     await validateYup(userCreateSchema, data);
-    const user = await db.user.create({ data });
+
+    const { avatar, ...restData } = data;
+
+    const user = await db.user.create({ data: restData });
 
     return user;
   }
@@ -62,9 +68,30 @@ class UserResolver {
   async updateUser(@Arg('data') data: UserUpdate, @Arg('id') id: string) {
     await validateYup(userUpdateSchema, data);
 
+    const { avatar, ...restData } = data;
+    console.log('🚀 ~ UserResolver ~ updateUser ~ avatar', avatar);
+
+    if (avatar) {
+      const { createReadStream, filename } = await avatar;
+
+      // Invoking the `createReadStream` will return a Readable Stream.
+      // See https://nodejs.org/api/stream.html#stream_readable_streams
+
+      const stream = createReadStream();
+
+      // This is purely for demonstration purposes and will overwrite the
+      // local-file-output.txt in the current working directory on EACH upload.
+
+      const out = createWriteStream('test.gif');
+
+      stream.pipe(out);
+
+      await finished(out);
+    }
+
     const user = await db.user.update({
       where: { id },
-      data,
+      data: restData,
     });
 
     return user;

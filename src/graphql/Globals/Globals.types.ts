@@ -23,3 +23,15 @@ export class GraphqlError {
   @Field(() => Code, { nullable: true })
   code?: Code;
 }
+
+@ObjectType()
+export class File {
+  @Field({ nullable: false })
+  filename: string;
+
+  @Field({ nullable: false })
+  mimetype: string;
+
+  @Field({ nullable: false })
+  encoding: string;
+}

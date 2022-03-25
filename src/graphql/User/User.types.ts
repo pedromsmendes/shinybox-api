@@ -1,6 +1,7 @@
 import {
   Field, InputType, ObjectType,
 } from 'type-graphql';
+import { GraphQLUpload, type FileUpload } from 'graphql-upload';
 
 import { Role } from '../Role/Role.types';
 
@@ -45,8 +46,8 @@ export class UserCreate {
   @Field({ nullable: true })
   name?: string;
 
-  @Field({ nullable: true })
-  avatar?: string;
+  @Field(() => GraphQLUpload, { nullable: true })
+  avatar?: FileUpload;
 
   @Field({ nullable: false })
   roleId: string;
@@ -63,8 +64,8 @@ export class UserUpdate {
   @Field({ nullable: true })
   name?: string;
 
-  @Field({ nullable: true })
-  avatar?: string;
+  @Field(() => GraphQLUpload, { nullable: true })
+  avatar?: FileUpload;
 
   @Field({ nullable: true })
   roleId?: string;

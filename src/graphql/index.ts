@@ -2,6 +2,7 @@ import { buildSchema } from 'type-graphql';
 import { ApolloServer } from 'apollo-server-express';
 import { type Express } from 'express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { GraphQLUpload, graphqlUploadExpress, Upload } from 'graphql-upload';
 
 import { GQL_PATH, IN_DEV, IN_TEST } from '@/globals';
 
@@ -12,6 +13,7 @@ const graphql = async (app: Express) => {
     resolvers: [`${__dirname}/**/*.{types,resolvers}.ts`],
     emitSchemaFile: IN_TEST,
     dateScalarMode: 'isoDate',
+    scalarsMap: [{ scalar: GraphQLUpload, type: Upload }],
   });
 
   const server = new ApolloServer({
@@ -29,6 +31,7 @@ const graphql = async (app: Express) => {
 
   await server.start();
 
+  app.use(graphqlUploadExpress());
   server.applyMiddleware({ app, path: GQL_PATH });
 };
 

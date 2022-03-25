@@ -19,6 +19,7 @@
   },
   "plugins": [
     "import",
+    "plugin:import/typescript",
     "@typescript-eslint"
   ],
   "settings": {

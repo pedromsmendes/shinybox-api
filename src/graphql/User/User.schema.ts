@@ -9,7 +9,6 @@ export const userCreateSchema = yup.object().shape<SchemaUser>({
   password: yup.string().min(6).required(),
   roleId: yup.string().uuid().notRequired().nullable(),
   name: yup.string().notRequired().nullable(),
-  avatar: yup.string().notRequired().nullable(),
 });
 
 export const userUpdateSchema = yup.object().shape<SchemaUser>({
@@ -17,5 +16,4 @@ export const userUpdateSchema = yup.object().shape<SchemaUser>({
   password: yup.string().min(6).notRequired(),
   roleId: yup.string().uuid().notRequired().nullable(),
   name: yup.string().notRequired().nullable(),
-  avatar: yup.string().notRequired().nullable(),
 });
