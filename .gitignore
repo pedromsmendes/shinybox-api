@@ -1,7 +1,9 @@
 build/
+public/
 
 node_modules
 
 coverage/
+
 
 *dev*

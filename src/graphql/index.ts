@@ -13,7 +13,6 @@ const graphql = async (app: Express) => {
     resolvers: [`${__dirname}/**/*.{types,resolvers}.ts`],
     emitSchemaFile: IN_TEST,
     dateScalarMode: 'isoDate',
-    scalarsMap: [{ scalar: GraphQLUpload, type: Upload }],
   });
 
   const server = new ApolloServer({

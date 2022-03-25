@@ -43,3 +43,12 @@ export const API_CLIENT_FRONTEND_ID = 'frontend';
 export const API_CLIENT_FRONTEND_SECRET = 'd9a5666d-c08e-41b8-b5f1-b56cb8a96f9e';
 export const API_CLIENT_MOBILE_ID = 'mobile';
 export const API_CLIENT_MOBILE_SECRET = '2df0064e-013c-4dd1-b611-8c7604b4aaf3';
+
+export const ALLOWED_IMG_UPLOADS = [
+  'png',
+  'bmp',
+  'jpg',
+  'jpeg',
+  'gif',
+  'webp',
+];
