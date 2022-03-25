@@ -8,7 +8,7 @@ import { type FileUpload } from 'graphql-upload';
 import { ALLOWED_IMG_UPLOADS } from '@/globals';
 
 const imgUpload = async (img: FileUpload, _dir: string) => {
-  const directory = `public/assets/${_dir}`
+  const directory = `assets/${_dir}`
 
   const { createReadStream, filename: originalFileName, mimetype } = await img;
 
@@ -17,12 +17,13 @@ const imgUpload = async (img: FileUpload, _dir: string) => {
   }
 
   const filename = `${randomUUID()}${path.extname(originalFileName)}`;
+  const fullPath = `${directory}/${filename}`;
 
   await mkdirp(directory);
 
   const fileSave = new Promise<void>((resolve, reject) => {
     const stream = createReadStream();
-    const writeStream = createWriteStream(`${directory}/${filename}`);
+    const writeStream = createWriteStream(`public/${fullPath}`);
 
     stream
       .pipe(new PassThrough())
@@ -35,7 +36,7 @@ const imgUpload = async (img: FileUpload, _dir: string) => {
 
   await fileSave;
 
-  return filename;
+  return fullPath;
 };
 
 export default imgUpload;

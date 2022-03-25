@@ -81,11 +81,11 @@ class UserResolver {
 
     if (avatar && user.id) {
       const dir = `pokemon/${user.id}`;
-      const avatarFileName = await imgUpload(avatar, dir);
+      const avatarFullPath = await imgUpload(avatar, dir);
 
       await db.user.update({
         where: { id },
-        data: { avatar: `${dir}/${avatarFileName}` },
+        data: { avatar: avatarFullPath },
       });
     }
 
