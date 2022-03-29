@@ -3,6 +3,7 @@ import {
 } from 'type-graphql';
 
 import { PokemonDex } from '../PokemonDex/PokemonDex.types';
+import { PageInfo } from '../_Globals/Globals.types';
 
 @ObjectType()
 export class Pokemon {
@@ -12,7 +13,7 @@ export class Pokemon {
   @Field({ nullable: false })
   name: string;
 
-  @Field(() => [PokemonDex])
+  @Field(() => [PokemonDex!]!)
   dexes: PokemonDex[];
 
   @Field({ nullable: false })
@@ -20,6 +21,24 @@ export class Pokemon {
 
   @Field({ nullable: false })
   updatedAt: Date;
+}
+
+@ObjectType()
+export class PokemonEdge {
+  @Field(() => Pokemon!, { nullable: false })
+  node: Pokemon;
+
+  @Field({ nullable: false })
+  cursor: string;
+}
+
+@ObjectType()
+export class PokemonsConnection {
+  @Field(() => [PokemonEdge!]!, { nullable: false })
+  edges: PokemonEdge[];
+
+  @Field(() => PageInfo, { nullable: false })
+  pageInfo: PageInfo;
 }
 
 @InputType()
@@ -36,7 +55,7 @@ export class PokemonDexCreate {
   @Field({ nullable: false })
   dexId: string;
 
-  @Field(() => Int, { nullable: false })
+  @Field(() => Int!, { nullable: false })
   number: number;
 
   @Field({ nullable: false })

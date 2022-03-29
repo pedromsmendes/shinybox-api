@@ -6,7 +6,9 @@ import db from '@/db';
 
 import { Auth } from '@/tools/Decorators';
 
-import { Pokemon, PokemonCreate, PokemonUpdate } from './Pokemon.types';
+import { Pagination } from '../_Globals/Globals.types';
+
+import { Pokemon, PokemonCreate, PokemonsConnection, PokemonUpdate } from './Pokemon.types';
 
 @Resolver(() => Pokemon)
 class PokemonResolver {
@@ -17,11 +19,23 @@ class PokemonResolver {
     return pokemon;
   }
 
-  @Query(() => [Pokemon])
-  async pokemons() {
+  @Query(() => PokemonsConnection)
+  async pokemons(@Arg('pagination', () => Pagination) pagination?: Pagination): Promise<PokemonsConnection> {
+    console.log('pagination: ', pagination);
     const pokemons = await db.pokemon.findMany();
 
-    return pokemons;
+    return {
+      edges: pokemons.map((pokemon) => ({
+        node: pokemon,
+        cursor: pokemon.id,
+      })),
+      pageInfo: {
+        hasNextPage,
+        hasPreviousPage,
+        pageCount,
+        totalCount,
+      }
+    };
   }
 
   @FieldResolver()

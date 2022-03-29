@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-core';
 import { type ObjectSchema, ValidationError } from 'yup';
 
-import { Code, type GraphqlError } from '@/graphql/Globals/Globals.types';
+import { Code, type GraphqlError } from '@/graphql/_Globals/Globals.types';
 
 const formatErrors = (exception: ValidationError) => {
   const errors: GraphqlError[] = [];
