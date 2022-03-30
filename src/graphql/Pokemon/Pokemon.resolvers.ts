@@ -8,7 +8,8 @@ import { Auth } from '@/tools/Decorators';
 
 import { Pagination } from '../_Globals/Globals.types';
 
-import { Pokemon, PokemonCreate, PokemonsConnection, PokemonUpdate } from './Pokemon.types';
+import { Pokemon, PokemonCreate, PokemonsConnection, PokemonsOptions, PokemonUpdate } from './Pokemon.types';
+import { Prisma } from '@prisma/client';
 
 @Resolver(() => Pokemon)
 class PokemonResolver {
@@ -20,9 +21,24 @@ class PokemonResolver {
   }
 
   @Query(() => PokemonsConnection)
-  async pokemons(@Arg('pagination', () => Pagination) pagination?: Pagination): Promise<PokemonsConnection> {
-    console.log('pagination: ', pagination);
-    const pokemons = await db.pokemon.findMany();
+  async pokemons(@Arg('options', () => PokemonsOptions, { nullable: true }) options?: PokemonsOptions) {
+    const { pagination, orderBy } = options || {};
+
+    const order = orderBy?.reduce<Prisma.PokemonOrderByWithRelationInput>((acc, item) => ({
+      ...acc || {},
+      [item.field]: item.sortOrder,
+    }), {});
+
+    const { after, first } = pagination || {};
+    const queryArgs: Prisma.PokemonFindManyArgs = {
+      ...(after ? { cursor: { id: after } } : {}),
+      ...(first ? { take: first } : {}),
+      ...((order && Object.keys(order).length) ? { orderBy: order } : {}),
+    };
+
+    const pokemons = await db.pokemon.findMany({
+      ...queryArgs,
+    });
 
     return {
       edges: pokemons.map((pokemon) => ({
@@ -30,10 +46,10 @@ class PokemonResolver {
         cursor: pokemon.id,
       })),
       pageInfo: {
-        hasNextPage,
-        hasPreviousPage,
-        pageCount,
-        totalCount,
+        hasNextPage: true,
+        hasPreviousPage: true,
+        pageCount: 1,
+        totalCount: 1,
       }
     };
   }

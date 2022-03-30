@@ -1,5 +1,6 @@
 import {
-  Field, InputType, Int, ObjectType, registerEnumType,
+  Field, InputType, Int,
+  ObjectType, registerEnumType,
 } from 'type-graphql';
 
 export enum Code {
@@ -10,6 +11,16 @@ export enum Code {
 registerEnumType(Code, {
   name: 'Code',
   description: 'The codes from the dang errors mang',
+});
+
+export enum Sort {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+registerEnumType(Sort, {
+  name: 'Sort',
+  description: 'Sorting',
 });
 
 @ObjectType()
