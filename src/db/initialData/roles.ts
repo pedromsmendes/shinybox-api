@@ -19,7 +19,9 @@ const roles = async () => {
     });
   }
 
-  await db.role.createMany({ data: rolesToCreate });
+  if (rolesToCreate.length) {
+    await db.role.createMany({ data: rolesToCreate });
+  }
 };
 
 export default roles;

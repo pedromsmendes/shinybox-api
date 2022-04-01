@@ -26,7 +26,9 @@ const apiClient = async () => {
     });
   }
 
-  await db.apiClient.createMany({ data: apiClientsToCreate });
+  if (apiClientsToCreate.length) {
+    await db.apiClient.createMany({ data: apiClientsToCreate });
+  }
 };
 
 export default apiClient;

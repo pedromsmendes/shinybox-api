@@ -42,7 +42,9 @@ const users = async () => {
     usersToCreate.push(user);
   }
 
-  await db.user.createMany({ data: usersToCreate });
+  if (usersToCreate.length) {
+    await db.user.createMany({ data: usersToCreate });
+  }
 };
 
 export default users;
