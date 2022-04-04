@@ -68,8 +68,8 @@ export class PokemonsConnection {
   @Field(() => Int!, { nullable: false })
   count: number;
 
-  // @Field(() => PageInfo!, { nullable: false })
-  // pageInfo: PageInfo;
+  @Field(() => Int!, { nullable: false })
+  totalCount: number;
 }
 
 @InputType()

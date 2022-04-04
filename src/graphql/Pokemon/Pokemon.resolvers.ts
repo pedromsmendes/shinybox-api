@@ -31,12 +31,15 @@ class PokemonResolver {
       ...queryArgs,
     });
 
+    const totalCount = await db.pokemon.count();
+
     return {
       edges: pokemons.map((pokemon) => ({
         node: pokemon,
         cursor: pokemon.id,
       })),
       count: pokemons.length,
+      totalCount,
     };
   }
 
