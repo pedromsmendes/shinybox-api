@@ -3,7 +3,7 @@ import {
 } from 'type-graphql';
 
 import { PokemonDex } from '../PokemonDex/PokemonDex.types';
-import { PageInfo, Pagination, Sort } from '../_Globals/Globals.types';
+import { Pagination, Sort } from '../_Globals/Globals.types';
 
 @ObjectType()
 export class Pokemon {
@@ -65,8 +65,11 @@ export class PokemonsConnection {
   @Field(() => [PokemonEdge!]!, { nullable: false })
   edges: PokemonEdge[];
 
-  @Field(() => PageInfo!, { nullable: false })
-  pageInfo: PageInfo;
+  @Field(() => Int!, { nullable: false })
+  count: number;
+
+  // @Field(() => PageInfo!, { nullable: false })
+  // pageInfo: PageInfo;
 }
 
 @InputType()

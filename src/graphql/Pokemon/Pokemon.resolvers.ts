@@ -10,6 +10,7 @@ import { Pagination } from '../_Globals/Globals.types';
 
 import { Pokemon, PokemonCreate, PokemonsConnection, PokemonsOptions, PokemonUpdate } from './Pokemon.types';
 import { Prisma } from '@prisma/client';
+import optionsToPrisma from '../optionsToPrisma';
 
 @Resolver(() => Pokemon)
 class PokemonResolver {
@@ -21,20 +22,10 @@ class PokemonResolver {
   }
 
   @Query(() => PokemonsConnection)
-  async pokemons(@Arg('options', () => PokemonsOptions, { nullable: true }) options?: PokemonsOptions) {
-    const { pagination, orderBy } = options || {};
-
-    const order = orderBy?.reduce<Prisma.PokemonOrderByWithRelationInput>((acc, item) => ({
-      ...acc || {},
-      [item.field]: item.sortOrder,
-    }), {});
-
-    const { after, first } = pagination || {};
-    const queryArgs: Prisma.PokemonFindManyArgs = {
-      ...(after ? { cursor: { id: after } } : {}),
-      ...(first ? { take: first } : {}),
-      ...((order && Object.keys(order).length) ? { orderBy: order } : {}),
-    };
+  async pokemons(
+    @Arg('options', () => PokemonsOptions, { nullable: true }) options?: PokemonsOptions,
+  ) {
+    const queryArgs = optionsToPrisma(options);
 
     const pokemons = await db.pokemon.findMany({
       ...queryArgs,
@@ -45,12 +36,7 @@ class PokemonResolver {
         node: pokemon,
         cursor: pokemon.id,
       })),
-      pageInfo: {
-        hasNextPage: true,
-        hasPreviousPage: true,
-        pageCount: 1,
-        totalCount: 1,
-      }
+      count: pokemons.length,
     };
   }
 

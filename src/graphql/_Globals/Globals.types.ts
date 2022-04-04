@@ -44,13 +44,13 @@ export class Pagination {
   after?: string;
 }
 
-@ObjectType()
-export class PageInfo {
-  @Field(() => Int, { nullable: false })
-  pageCount: number;
+// @ObjectType()
+// export class PageInfo {
+  // @Field(() => Int, { nullable: false })
+  // pageCount: number;
 
-  @Field(() => Int, { nullable: false })
-  totalCount: number;
+  // @Field(() => Int, { nullable: false })
+  // totalCount: number;
 
   // @Field({ nullable: true })
   // nextCursor: string | null;
@@ -58,9 +58,9 @@ export class PageInfo {
   // @Field({ nullable: true })
   // previousCursor: string | null;
 
-  @Field({ nullable: false })
-  hasNextPage: boolean;
+  // @Field({ nullable: false })
+  // hasNextPage: boolean;
 
-  @Field({ nullable: false })
-  hasPreviousPage: boolean;
-}
+  // @Field({ nullable: false })
+  // hasPreviousPage: boolean;
+// }
